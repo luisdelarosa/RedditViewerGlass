@@ -2,11 +2,13 @@ package com.luisdelarosa.redditviewerglass;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RestAdapter.Builder;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 import com.google.android.glass.widget.CardScrollAdapter;
 import com.google.android.glass.widget.CardScrollView;
+import com.luisdelarosa.reddit.MockRedditClient;
 import com.luisdelarosa.reddit.RedditPost;
 import com.luisdelarosa.reddit.RedditResponse;
 import com.luisdelarosa.reddit.RedditService;
@@ -18,6 +20,8 @@ import android.view.Menu;
 
 public class MainActivity extends Activity {
 
+	private static final boolean USE_MOCK = true;
+	
     protected static final String LOG_TAG = "MainActivity";
 	private RedditPostCardScrollAdapter mAdapter;
 
@@ -50,8 +54,14 @@ public class MainActivity extends Activity {
 	}
 
 	private void loadHotPostsFromSubreddit(String subreddit) {
-		RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(
-				"http://reddit.com").build();
+		Builder builder = new RestAdapter.Builder();
+		builder.setEndpoint("http://reddit.com");
+		
+		if (USE_MOCK) {
+			// Mock out Reddit API in case of connectivity issues
+			builder.setClient(new MockRedditClient());
+		}
+		RestAdapter restAdapter = builder.build();
 
 		RedditService service = restAdapter.create(RedditService.class);
 		
