@@ -19,18 +19,6 @@ public class RedditPostCardScrollAdapter extends CardScrollAdapter {
 	}
 
 	@Override
-	public int findIdPosition(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int findItemPosition(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public int getCount() {
 		if (mRedditResponse == null) {
 			return 0;
@@ -63,16 +51,19 @@ public class RedditPostCardScrollAdapter extends CardScrollAdapter {
 		// Create card so we can make a Glass-appropriate View
 		Card card = new Card(mContext);
 		card.setText(title);
-		View view = card.toView();
-		
-		// ensure we call setItemForView
-		setItemOnCard(post, view);
+		View view = card.getView();
 		
 		return view;
 	}
 
 	public void setRedditResponse(RedditResponse redditResponse) {
 		mRedditResponse = redditResponse;
+	}
+
+	@Override
+	public int getPosition(Object arg0) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
